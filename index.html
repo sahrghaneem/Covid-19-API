@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covid19</title>
+</head>
+<style>
+  /* * {
+        box-sizing: border-box;
+
+    }
+
+    body {
+        background-color: rgb(221, 242, 243);
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+
+    }
+     */
+
+  .regionBtn{
+     display:inline;
+    align-content: flex-start; 
+    justify-content: space-between;
+    width:16%;
+    background-color: white;
+    color: black;
+    font-size: 18px;
+
+  }
+  .countryBtn{
+     display:inline;
+    align-content: flex-start; 
+    justify-content: space-between;
+    width:16%;
+    background-color: black;
+    color: pink;
+    white-space: nowrap
+     }
+</style>
+<body>
+  <div class="container">
+  <canvas id="myChart" width="200" height="700"></canvas>
+  </div>  
+  <div id="region_name" class="region_name">
+  </div>
+  <div id="country_name" class="country_name">
+  </div>
+    <script src="covid.js"></script>
+    
+</body>
+</html>
