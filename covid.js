@@ -1,17 +1,26 @@
-
-    
+var datalabels = [],
+  deathData = [],
+  recoveredData = [],
+  confirmedData = [],
+  criticalData = [],
+  totalConfirmedCases=[],
+  totalActiveCasesToday=[],
+  totalDeathCases=[],
+  totalRecoveredCases=[],
+  totalNewDeathsToday=[],
+  InCriticalCondition=[];
 
 const currentState = {
   currentRegion: 'global',
-  currentStatsType: '',
+  // currentStatsType: '',
 
-  CovidData: {
-    totalConfirmedCases: 0,
-    totalActiveCases: 0,
-    totalRecovered: 0,
-    totalDeaths: 0,
-    countriesArray: [],
-  }
+  // CovidData: {
+  //   totalConfirmedCases: 0,
+  //   totalActiveCases: 0,
+  //   totalRecovered: 0,
+  //   totalDeaths: 0,
+  //   countriesArray: [],
+  // }
 }
 
 const continents = {
@@ -21,7 +30,7 @@ const continents = {
   americas: {},
   oceania: {},
 }
-function updateChart(newDataLabels, newDeathData, newConfirmedData, newRecoveredData, newCriticalData, totalConfirmedCases, totalActiveCasesToday, totalDeathCases, totalRecoveredCases, totalNewDeathsToday, InCriticalCondition) {
+function updateChart() {
   const ctx = document.querySelector('#myChart').getContext('2d');
   const chart = new Chart(ctx, {
     // The type of chart we want to create
@@ -29,11 +38,11 @@ function updateChart(newDataLabels, newDeathData, newConfirmedData, newRecovered
 
     // The data for our dataset
     data: {
-      labels: newDataLabels,
+      labels: datalabels,
       datasets: [
         {
           label: 'number of Deaths',
-          data: newDeathData,
+          data: deathData,
           backgroundColor: [
             'rgba(155, 1, 132, 0.4)',
             'rgba(54, 162, 235, 0.2)',
@@ -54,7 +63,7 @@ function updateChart(newDataLabels, newDeathData, newConfirmedData, newRecovered
         },
         {
           label: 'number of Confirmed Cases',
-          data: newConfirmedData,
+          data: confirmedData,
           backgroundColor: [
             // 'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.4)',
@@ -75,7 +84,7 @@ function updateChart(newDataLabels, newDeathData, newConfirmedData, newRecovered
         },
         {
           label: 'number of recovered',
-          data: newRecoveredData,
+          data: recoveredData,
           backgroundColor: [
             // 'rgba(255, 99, 132, 0.2)',
             'rgba(1, 1, 1, 0.4)',
@@ -96,7 +105,7 @@ function updateChart(newDataLabels, newDeathData, newConfirmedData, newRecovered
         },
         {
           label: 'number of critical',
-          data: newCriticalData,
+          data: criticalData,
           backgroundColor: [
             // 'rgba(255, 99, 132, 0.2)',
             'rgba(222, 22, 22, 0.4)',
@@ -265,8 +274,6 @@ function updateChart(newDataLabels, newDeathData, newConfirmedData, newRecovered
   });
 }
 
-
-
 function RegionButtons() {
   const regions = ['global', ...Object.keys(continents)];
   const regionContainer = document.querySelector('.region_name');
@@ -282,50 +289,47 @@ function RegionButtons() {
 RegionButtons();
 
 async function handleRegionClick(e) {
-  console.log(e.target);
+  // console.log(e.target);
   currentState.currentRegion = e.target.getAttribute('name');
-  console.log(currentState.currentRegion);
-  let extName = e.target.getAttribute('name')
-  let extension = (extName === "global") ? ' ' : `region/${extName}` // get the last part of the url (region/name or " " for global)
-  console.log(extension);
-  var datalabels = [],
-  deathdata = [],
-  recoveredData = [],
-  confirmedData = [],
-  criticalData = [],
-  totalConfirmedCases=[],
-  totalActiveCasesToday=[],
-  totalDeathCases=[],
-  totalRecoveredCases=[],
-  totalNewDeathsToday=[],
+  // console.log(currentState.currentRegion);
+  let extension = (currentState.currentRegion === "global") ? ' ' : `region/${currentState.currentRegion}` // get the last part of the url (region/name or " " for global)
+  // console.log(extension);
+  datalabels = [];
+  deathData = [];
+  recoveredData = [];
+  confirmedData = [];
+  criticalData = [];
+  totalConfirmedCases=[];
+  totalActiveCasesToday=[];
+  totalDeathCases=[];
+  totalRecoveredCases=[];
+  totalNewDeathsToday=[];
   InCriticalCondition=[];
-
   var countryCode = "";
   const url2 = await (await fetch('https://api.allorigins.win/raw?url=' + 'https://restcountries.herokuapp.com/api/v1/' + extension)).json();
-  const regionContainer = document.querySelector('.country_name');
-  regionContainer.innerHTML = ""; 
+  const CountriesContainer = document.querySelector('.country_name');
+  CountriesContainer.innerHTML = ""; 
   for (i = 0; i < url2.length; i++) {
     if (url2[i].cca2 != "XK") {
       let countryName = url2[i].name.common;
       countryCode = url2[i].cca2
       datalabels.push(countryName);
 
-      // - creating buttons for countries -
+      //  creating buttons for countries 
       
       const countryBtn = document.createElement('button');
       countryBtn.classList.add('countryBtn');
       countryBtn.textContent = countryName;
       countryBtn.setAttribute('code', countryCode); // button holds the data for the specific country code
-      regionContainer.appendChild(countryBtn);
+      CountriesContainer.appendChild(countryBtn);
       countryBtn.addEventListener('click', handleCountryClick);
       // end of creating buttons
      
       const url3 = await (await fetch('https://corona-api.com/countries/' + countryCode)).json();
-      deathdata.push(url3.data.latest_data.deaths);
+      deathData.push(url3.data.latest_data.deaths);
       recoveredData.push(url3.data.latest_data.recovered);
       confirmedData.push(url3.data.latest_data.confirmed);
       criticalData.push(url3.data.latest_data.critical);
-
       totalConfirmedCases.push(url3.data.timeline.confirmed);
       totalActiveCasesToday.push(url3.data.timeline.active)
       totalDeathCases.push(url3.data.timeline.deaths);
@@ -335,25 +339,34 @@ async function handleRegionClick(e) {
 
     }
   }
-  updateChart(datalabels, deathdata, confirmedData, recoveredData, criticalData, totalConfirmedCases, totalActiveCasesToday, totalDeathCases, totalRecoveredCases, totalNewDeathsToday, InCriticalCondition)
+  updateChart()
 }
 async function handleCountryClick(e){ // function to handle the country data and send to chart
-  var Countrydatalabels=[], Countrydeathdata=[], CountryconfirmedData=[], CountryrecoveredData=[], CountrycriticalData=[], CountrytotalConfirmedCases=[], CountrytotalActiveCasesToday=[], CountrytotalDeathCases=[], CountrytotalRecoveredCases=[], CountrytotalNewDeathsToday=[], CountryInCriticalCondition=[]
+  datalabels = [];
+  deathData = [];
+  recoveredData = [];
+  confirmedData = [];
+  criticalData = [];
+  totalConfirmedCases=[];
+  totalActiveCasesToday=[];
+  totalDeathCases=[];
+  totalRecoveredCases=[];
+  totalNewDeathsToday=[];
+  InCriticalCondition=[];
   let countryCode = e.target.getAttribute('code')
   const url3 = await (await fetch('https://corona-api.com/countries/' + countryCode )).json();
-  Countrydeathdata.push(url3.data.latest_data.deaths);
-  CountryrecoveredData.push(url3.data.latest_data.recovered);
-  CountryconfirmedData.push(url3.data.latest_data.confirmed);
-  CountrycriticalData.push(url3.data.latest_data.critical);
+  deathData.push(url3.data.latest_data.deaths);
+      recoveredData.push(url3.data.latest_data.recovered);
+      confirmedData.push(url3.data.latest_data.confirmed);
+      criticalData.push(url3.data.latest_data.critical);
+      totalConfirmedCases.push(url3.data.timeline.confirmed);
+      totalActiveCasesToday.push(url3.data.timeline.active)
+      totalDeathCases.push(url3.data.timeline.deaths);
+      totalRecoveredCases.push(url3.data.timeline.recovered);
+      totalNewDeathsToday.push(url3.data.timeline.new_deaths)
+      InCriticalCondition.push(url3.data.timeline.is_in_progress);
 
-  CountrytotalConfirmedCases.push(url3.data.timeline.confirmed);
-  CountrytotalActiveCasesToday.push(url3.data.timeline.active)
-  CountrytotalDeathCases.push(url3.data.timeline.deaths);
-  CountrytotalRecoveredCases.push(url3.data.timeline.recovered);
-  CountrytotalNewDeathsToday.push(url3.data.timeline.new_deaths)
-  CountryInCriticalCondition.push(url3.data.timeline.is_in_progress);
-
-  updateChart(Countrydatalabels, Countrydeathdata, CountryconfirmedData, CountryrecoveredData, CountrycriticalData, CountrytotalConfirmedCases, CountrytotalActiveCasesToday, CountrytotalDeathCases, CountrytotalRecoveredCases, CountrytotalNewDeathsToday, CountryInCriticalCondition)
+  updateChart()
 
 }
 

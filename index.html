@@ -8,23 +8,37 @@
     <title>Covid19</title>
 </head>
 <style>
-  /* * {
-        box-sizing: border-box;
+  /* .loading {
+  display: flex;
+  justify-content: center;
+}
 
-    }
+.loading_spinner {
+  align-items: center;
+  height: 100%;
+}
 
-    body {
-        background-color: rgb(221, 242, 243);
-        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        margin: 0;
+.loading::after {
+  content: "";
+  width: 50px;
+  height: 50px;
+  border: 10px solid #dddddd;
+  border-top-color: #009579;
+  border-radius: 50%;
+  transform: rotate(0.16turn);
+  animation: loading 1s ease infinite;
+}
 
-    }
-     */
-
+@keyframes loading {
+  /* Safari support */
+  /* from {
+    transform: rotate(0turn);
+  }
+  
+  to {
+    transform: rotate(1turn);
+  }
+} */
   .regionBtn{
      display:inline;
     align-content: flex-start; 
@@ -46,6 +60,7 @@
      }
 </style>
 <body>
+  <!-- <div class="loading loading_spinner"></div> -->
   <div class="container">
   <canvas id="myChart" width="200" height="700"></canvas>
   </div>  
