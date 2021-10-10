@@ -8,7 +8,7 @@
     <title>Covid19</title>
 </head>
 <style>
-  /* .loading {
+  .loading {
   display: flex;
   justify-content: center;
 }
@@ -31,44 +31,68 @@
 
 @keyframes loading {
   /* Safari support */
-  /* from {
+   from {
     transform: rotate(0turn);
   }
   
   to {
     transform: rotate(1turn);
   }
-} */
+}
   .regionBtn{
-     display:inline;
-    align-content: flex-start; 
-    justify-content: space-between;
-    width:16%;
+    text-align: center;
+    height: 4vh;
     background-color: white;
     color: black;
     font-size: 18px;
-
+    margin-right: 1vw;
   }
   .countryBtn{
-     display:inline;
-    align-content: flex-start; 
-    justify-content: space-between;
+    text-align: center;
     width:16%;
+    height: 2vh;
     background-color: black;
     color: pink;
-    white-space: nowrap
+    overflow: hidden;
      }
+  #spinnerContainer {
+    position: absolute;
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 97vh;
+    width: 97vw;
+  }
+  #pageContainer {
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+    height: 97vh;
+    width: 97vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  body::-webkit-scrollbar {
+    display: none;
+  }
 </style>
 <body>
-  <!-- <div class="loading loading_spinner"></div> -->
-  <div class="container">
-  <canvas id="myChart" width="200" height="700"></canvas>
-  </div>  
-  <div id="region_name" class="region_name">
+  <div id="spinnerContainer">
+    <div class="loading loading_spinner"></div>
   </div>
-  <div id="country_name" class="country_name">
+  <div id="pageContainer">
+    <div class="container" style="display: flex; align-items: center; justify-content: center;">
+      <div style="width: 80vw; height: 70vh;">
+      <canvas id="myChart"></canvas>
+      </div>
+    </div>  
+    <div id="region_name" class="region_name">
+    </div>
+    <div id="country_name" class="country_name">
+    </div>
   </div>
     <script src="covid.js"></script>
-    
 </body>
 </html>
